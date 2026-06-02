@@ -24,3 +24,21 @@ Pensieve uses:
 - Vercel for deployment.
 
 The application is intentionally not a full Google Drive replacement.
+
+## 2. Product Vision
+
+Create the simplest practical personal file-access system:
+
+```text
+Open Pensieve
+      ↓
+Unlock with password
+      ↓
+View files
+      ↓
+Search / upload / download / organize
+      ↓
+Done
+```
+
+The interface should be minimal, fast, responsive, and reliable.
