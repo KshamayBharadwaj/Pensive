@@ -328,3 +328,60 @@ Files
 ```
 
 Files do not have to belong to a folder.
+
+## 10. Folder Management
+
+Users can:
+
+- Create folders.
+- Rename folders.
+- Delete folders.
+- Open folders.
+- Create nested folders.
+- Move files into folders.
+- Move files between folders.
+- Favorite folders.
+
+Use `parent_folder_id` for nested folders.
+
+A null parent represents the root.
+
+Folder deletion must never silently cause data loss.
+
+## 11. Upload
+
+Support:
+
+- File picker.
+- Multiple files.
+- Drag and drop.
+
+Upload flow:
+
+```text
+Browser
+   ↓
+Authenticated Next.js endpoint
+   ↓
+Google Drive API
+   ↓
+Upload succeeds
+   ↓
+Receive Google Drive file ID
+   ↓
+Save metadata in Supabase
+```
+
+Do not create a successful metadata record if the Google Drive upload fails.
+
+Show progress for large files.
+
+Example:
+
+```text
+Uploading project.zip
+
+██████████████████░░ 87%
+
+84 MB / 96 MB
+```
