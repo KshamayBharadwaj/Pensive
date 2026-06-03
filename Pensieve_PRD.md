@@ -65,3 +65,60 @@ Pensieve must allow the user to:
 - Sort and filter files.
 - View file details.
 - Keep files at the root without requiring a folder.
+
+## 4. Non-Goals
+
+V1 does not include:
+
+- Multiple users.
+- User registration.
+- Usernames.
+- User profiles.
+- Google OAuth as the Pensieve login.
+- Public file sharing.
+- Team collaboration.
+- Native desktop/mobile apps.
+- Offline synchronization.
+- AI search.
+- Complex enterprise permissions.
+- Full Google Drive replacement.
+
+## 5. Architecture
+
+```text
+                         ┌───────────────────────┐
+                         │       Browser         │
+                         │    Pensieve UI        │
+                         └───────────┬───────────┘
+                                     │ HTTPS
+                                     ▼
+                         ┌───────────────────────┐
+                         │       Next.js         │
+                         │ UI + Route Handlers   │
+                         │ Authentication        │
+                         └───────┬───────────────┘
+                                 │
+                    ┌────────────┴────────────┐
+                    │                         │
+                    ▼                         ▼
+          ┌──────────────────┐       ┌──────────────────┐
+          │ Supabase         │       │ Google Drive     │
+          │ PostgreSQL       │       │ API              │
+          │                  │       │                  │
+          │ Password hash    │       │ Actual files     │
+          │ File metadata    │       │ File contents    │
+          │ Folder metadata  │       │ Drive folders    │
+          │ Favorites        │       │                  │
+          │ Activity         │       │                  │
+          └──────────────────┘       └──────────────────┘
+```
+
+### Responsibility
+
+**Next.js:** UI, authentication, sessions, validation, and coordination.
+
+**Supabase:** metadata and application data.
+
+**Google Drive:** actual file contents and storage.
+
+Google Drive is the source of truth for actual file contents. Supabase is the source of truth for Pensieve-specific metadata.
