@@ -122,3 +122,159 @@ V1 does not include:
 **Google Drive:** actual file contents and storage.
 
 Google Drive is the source of truth for actual file contents. Supabase is the source of truth for Pensieve-specific metadata.
+
+## 6. Authentication
+
+Pensieve uses a single password.
+
+There is:
+
+- No username.
+- No registration.
+- No social login.
+- No multi-user system.
+
+### Password storage
+
+Never store the plaintext password.
+
+Store only a strong password hash in Supabase PostgreSQL.
+
+Recommended:
+
+- Argon2id, preferred.
+- bcrypt, acceptable.
+
+The password is hashed server-side.
+
+### First-time setup
+
+On the first visit, the server checks whether a password hash exists.
+
+```text
+Application Open
+       ↓
+Is vault initialized?
+    /             NO             YES
+  ↓               ↓
+Setup            Login
+```
+
+The setup screen contains:
+
+- Password.
+- Confirm password.
+- Create Vault button.
+
+Flow:
+
+```text
+Enter password
+      ↓
+Confirm password
+      ↓
+Validate
+      ↓
+Hash server-side
+      ↓
+Store hash in Supabase
+      ↓
+Initialize vault
+      ↓
+Create session
+      ↓
+Open Pensieve
+```
+
+The user must never manually generate or paste a password hash.
+
+Once initialized, setup must be disabled server-side.
+
+### Login
+
+After initialization:
+
+```text
+Open Pensieve
+      ↓
+Check session
+      ↓
+Valid session?
+  /          YES            NO
+↓              ↓
+Vault         Login
+```
+
+### Sessions
+
+Use a secure server-side session represented by an HttpOnly cookie.
+
+Requirements:
+
+- HttpOnly.
+- Secure in production.
+- Appropriate SameSite policy.
+- Expiration.
+- Logout support.
+- Session invalidation after password changes.
+
+Do not store authentication credentials in localStorage.
+
+### Password change
+
+Authenticated users can change the password:
+
+```text
+Current password
+      ↓
+New password
+      ↓
+Confirm
+      ↓
+Verify current password
+      ↓
+Hash new password
+      ↓
+Store new hash
+      ↓
+Invalidate old sessions
+      ↓
+Login again
+```
+
+### Login protection
+
+Implement basic rate limiting and increasing delays after repeated failed attempts.
+
+## 7. Main UI
+
+The design should be extremely minimal.
+
+Avoid:
+
+- Excessive shadows.
+- Gradients.
+- Glassmorphism.
+- Decorative illustrations.
+- Large cards.
+- Excessive animation.
+- Dashboard clutter.
+
+Desktop structure:
+
+```text
+┌──────────────────────────────────────────────────────────────┐
+│ Pensieve                    Search...              + Upload │
+├──────────────┬───────────────────────────────────────────────┤
+│ All Files    │ Recent / Current Folder                       │
+│ Recent       │                                               │
+│ Favorites    │ Name              Size        Modified         │
+│              │ ───────────────────────────────────────────── │
+│ Folders      │ DBMS Notes.pdf    2.4 MB      Sep 28           │
+│ ├ College    │ project.zip       84 MB       Sep 27           │
+│ ├ Projects   │ report.xlsx       5 MB        Sep 26           │
+│ └ Personal   │                                               │
+└──────────────┴───────────────────────────────────────────────┘
+```
+
+Use clean typography, subtle borders, whitespace, simple icons, and restrained colors.
