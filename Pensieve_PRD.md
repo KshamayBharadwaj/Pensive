@@ -42,3 +42,26 @@ Done
 ```
 
 The interface should be minimal, fast, responsive, and reliable.
+
+## 3. Goals
+
+Pensieve must allow the user to:
+
+- Unlock the vault with one password.
+- Access the vault from any computer with a browser.
+- View all files.
+- View recent files.
+- Search files quickly.
+- Create folders.
+- Create nested folders.
+- Upload files.
+- Upload multiple files.
+- Drag and drop files.
+- Download files.
+- Rename files.
+- Move files.
+- Delete files.
+- Mark files and folders as favorites.
+- Sort and filter files.
+- View file details.
+- Keep files at the root without requiring a folder.
