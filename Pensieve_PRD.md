@@ -278,3 +278,53 @@ Desktop structure:
 ```
 
 Use clean typography, subtle borders, whitespace, simple icons, and restrained colors.
+
+## 8. Navigation
+
+Sidebar:
+
+```text
+All Files
+Recent
+Favorites
+
+Folders
+├── College
+├── Projects
+├── Personal
+└── Documents
+```
+
+Include a New Folder action.
+
+On mobile, use compact navigation instead of a permanent sidebar.
+
+## 9. All Files
+
+The primary view supports:
+
+- Root-level files.
+- Folders.
+- Nested folders.
+- Upload.
+- Search.
+- Sort.
+- Filter.
+- File actions.
+- Folder actions.
+
+Example:
+
+```text
+Folders
+📁 College
+📁 Projects
+📁 Documents
+
+Files
+📄 resume.pdf
+📄 notes.txt
+📦 backup.zip
+```
+
+Files do not have to belong to a folder.
