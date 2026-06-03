@@ -385,3 +385,40 @@ Uploading project.zip
 
 84 MB / 96 MB
 ```
+
+## 12. Download
+
+Flow:
+
+```text
+Click Download
+      ↓
+Verify session
+      ↓
+Find Supabase metadata
+      ↓
+Get Google Drive file ID
+      ↓
+Request file from Drive
+      ↓
+Stream/download
+      ↓
+Browser saves original filename
+```
+
+Never expose Google credentials to the browser.
+
+## 13. Rename
+
+Rename must update both:
+
+1. Google Drive.
+2. Supabase metadata.
+
+Handle partial failures and reconciliation.
+
+## 14. Move
+
+Users can move files between folders.
+
+The application must keep Google Drive folder relationships and Supabase folder metadata synchronized.
