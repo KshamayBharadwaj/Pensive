@@ -463,3 +463,60 @@ Use:
 - PostgreSQL full-text search or pg_trgm later if needed.
 
 Search results should show the file's location.
+
+## 18. Sorting
+
+Support:
+
+- Name.
+- Modified date.
+- Created date.
+- Size.
+- Type.
+
+Support ascending and descending order.
+
+## 19. Filtering
+
+Useful filters:
+
+- All.
+- Documents.
+- Images.
+- Videos.
+- Audio.
+- Archives.
+- Code.
+- Favorites.
+
+Keep filters lightweight.
+
+## 20. File Details
+
+Display:
+
+```text
+project.zip
+
+Type
+ZIP archive
+
+Size
+84.2 MB
+
+Location
+Projects / Web
+
+Created
+September 27, 2026
+
+Modified
+September 28, 2026
+
+Actions
+Download
+Rename
+Move
+Favorite
+Delete
+```
