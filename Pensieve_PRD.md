@@ -520,3 +520,40 @@ Move
 Favorite
 Delete
 ```
+
+## 21. Delete
+
+Prefer trash/soft deletion rather than permanent deletion.
+
+Flow:
+
+```text
+Delete
+  ↓
+Verify session
+  ↓
+Move file to Google Drive trash
+  ↓
+Update Supabase metadata
+```
+
+Show confirmation before deletion.
+
+## 22. Google Drive Integration
+
+Use the official Google Drive API for:
+
+- File listing.
+- Upload.
+- Download.
+- Metadata retrieval.
+- Rename.
+- Move.
+- Trash/delete.
+- Folder creation.
+- Folder metadata.
+- Change tracking where practical.
+
+Google Drive credentials must remain server-side.
+
+The user should not need to sign into Google on every computer.
