@@ -422,3 +422,44 @@ Handle partial failures and reconciliation.
 Users can move files between folders.
 
 The application must keep Google Drive folder relationships and Supabase folder metadata synchronized.
+
+## 15. Favorites
+
+Files and folders can be marked as favorites.
+
+```text
+☆ Add to favorites
+★ Remove from favorites
+```
+
+Favorites are stored in Supabase and do not duplicate files in Drive.
+
+## 16. Recent
+
+Recent should include useful activity such as:
+
+- Recently uploaded.
+- Recently modified.
+- Recently accessed through Pensieve.
+
+Store recent activity in Supabase where useful.
+
+## 17. Search
+
+Search should primarily use Supabase metadata.
+
+Search fields:
+
+- Filename.
+- Folder name.
+- File type.
+- Other indexed metadata where useful.
+
+Do not query Google Drive on every keystroke.
+
+Use:
+
+- Indexed filename search initially.
+- PostgreSQL full-text search or pg_trgm later if needed.
+
+Search results should show the file's location.
