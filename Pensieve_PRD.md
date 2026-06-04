@@ -557,3 +557,138 @@ Use the official Google Drive API for:
 Google Drive credentials must remain server-side.
 
 The user should not need to sign into Google on every computer.
+
+## 23. Synchronization
+
+Pensieve must handle changes made directly in Google Drive.
+
+Examples:
+
+```text
+Pensieve:
+project.zip
+
+Google Drive:
+project.zip
+notes.zip
+```
+
+A synchronization process should eventually discover `notes.zip`.
+
+Synchronization should occur:
+
+- On application refresh.
+- When entering All Files where appropriate.
+- After important mutations.
+- Through Drive change tracking where practical.
+
+### Source of truth
+
+| Data | Source |
+|---|---|
+| File bytes | Google Drive |
+| Drive file ID | Google Drive |
+| File name | Google Drive, synced to Supabase |
+| Folder relationship | Google Drive, synced to Supabase |
+| Favorites | Supabase |
+| Recent activity | Supabase |
+| Password hash | Supabase |
+| Sessions | Server/Supabase |
+
+## 24. Database Schema
+
+### `vault_settings`
+
+```text
+id
+password_hash
+created_at
+updated_at
+```
+
+There should be only one active vault configuration.
+
+### `files`
+
+```text
+id
+google_drive_id
+name
+mime_type
+size
+folder_id
+google_created_at
+google_modified_at
+created_at
+updated_at
+is_favorite
+is_trashed
+```
+
+### `folders`
+
+```text
+id
+google_drive_id
+name
+parent_folder_id
+created_at
+updated_at
+is_favorite
+is_trashed
+```
+
+### `sessions` (if server-side sessions are used)
+
+```text
+id
+session_token_hash
+expires_at
+created_at
+```
+
+### `activity`
+
+```text
+id
+file_id
+action
+created_at
+```
+
+Possible actions:
+
+```text
+UPLOAD
+DOWNLOAD
+OPEN
+RENAME
+MOVE
+FAVORITE
+UNFAVORITE
+DELETE
+```
+
+Only record activity that provides actual value.
+
+## 25. Database Indexes
+
+Recommended indexes:
+
+```text
+files.google_drive_id
+files.name
+files.folder_id
+files.is_favorite
+files.is_trashed
+files.google_modified_at
+
+folders.google_drive_id
+folders.parent_folder_id
+folders.name
+
+activity.file_id
+activity.created_at
+```
+
+Add composite indexes only when actual query patterns justify them.
