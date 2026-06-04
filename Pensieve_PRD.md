@@ -765,3 +765,73 @@ Validate server-side:
 - Pagination parameters.
 
 Never trust browser input.
+
+## 29. Security Requirements
+
+Required:
+
+- HTTPS in production.
+- Strong password hashing.
+- HttpOnly cookies.
+- Secure cookies.
+- Appropriate SameSite policy.
+- Server-side authentication.
+- Server-side authorization.
+- Rate limiting.
+- Input validation.
+- Secure environment variables.
+- No credentials in source control.
+- No server secrets in client bundles.
+
+Never expose:
+
+- Google client secret.
+- Google refresh token.
+- Supabase service-role key.
+- Session secrets.
+
+## 30. Environment Variables
+
+Example:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+
+SUPABASE_SERVICE_ROLE_KEY=
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_REFRESH_TOKEN=
+
+SESSION_SECRET=
+```
+
+Only public configuration should use `NEXT_PUBLIC_*`.
+
+Use Vercel Environment Variables for production secrets.
+
+Do not commit `.env.local`.
+
+## 31. Error Handling
+
+Use user-friendly messages.
+
+Examples:
+
+```text
+Unable to upload the file.
+Please try again.
+```
+
+```text
+Google Drive is currently unavailable.
+Please try again later.
+```
+
+```text
+Your session has expired.
+Please unlock Pensieve again.
+```
+
+Never show raw exceptions.
