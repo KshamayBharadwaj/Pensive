@@ -692,3 +692,76 @@ activity.created_at
 ```
 
 Add composite indexes only when actual query patterns justify them.
+
+## 26. API Structure
+
+Suggested routes:
+
+```text
+/api/auth/setup
+/api/auth/login
+/api/auth/logout
+/api/auth/session
+/api/auth/change-password
+
+/api/files
+/api/files/[id]
+/api/files/[id]/download
+/api/files/[id]/rename
+/api/files/[id]/move
+/api/files/[id]/favorite
+/api/files/[id]/delete
+
+/api/files/upload
+
+/api/folders
+/api/folders/[id]
+/api/folders/[id]/rename
+/api/folders/[id]/move
+/api/folders/[id]/favorite
+/api/folders/[id]/delete
+
+/api/search
+/api/sync
+```
+
+All protected endpoints must verify the session.
+
+## 27. API Response Format
+
+Success:
+
+```json
+{
+  "success": true,
+  "data": {}
+}
+```
+
+Error:
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "FILE_NOT_FOUND",
+    "message": "The requested file could not be found."
+  }
+}
+```
+
+Never expose stack traces or sensitive implementation details.
+
+## 28. Validation
+
+Validate server-side:
+
+- Passwords.
+- Folder names.
+- File IDs.
+- Search strings.
+- Sort parameters.
+- Filter parameters.
+- Pagination parameters.
+
+Never trust browser input.
