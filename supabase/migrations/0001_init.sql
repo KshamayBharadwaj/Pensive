@@ -11,3 +11,14 @@ create table if not exists public.vault_settings (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+create table if not exists public.folders (
+  id uuid primary key default gen_random_uuid(),
+  google_drive_id text unique,
+  name text not null,
+  parent_folder_id uuid references public.folders(id) on delete set null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  is_favorite boolean not null default false,
+  is_trashed boolean not null default false
+);
