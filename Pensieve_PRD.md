@@ -1119,3 +1119,108 @@ Setup
 → Delete
 → Logout
 ```
+
+## 40. Failure Scenarios
+
+### Google Drive unavailable
+
+Show an appropriate error without crashing the application.
+
+### Supabase unavailable
+
+Do not perform unsafe mutations.
+
+### Upload fails
+
+Do not create false metadata.
+
+### Metadata update fails after Drive update
+
+Mark the operation for reconciliation rather than pretending both systems succeeded.
+
+### Drive file disappears
+
+Mark the corresponding metadata stale or trashed during synchronization.
+
+### Session expires
+
+Return an authentication error and require login.
+
+## 41. Engineering Rules
+
+1. Do not store actual file contents in Supabase.
+2. Do not expose Google credentials to the client.
+3. Do not store plaintext passwords.
+4. Do not commit secrets.
+5. Do not use localStorage for authentication.
+6. Do not trust client-provided ownership information.
+7. Do not query Google Drive for every search keystroke.
+8. Do not load thousands of files into the browser at once.
+9. Do not over-engineer V1.
+10. Keep Google Drive and Supabase responsibilities clearly separated.
+
+## 42. Future Features
+
+Only after V1 is stable consider:
+
+- File previews.
+- Advanced full-text search.
+- Tags.
+- Multiple vaults.
+- File versioning.
+- Sharing.
+- Public links.
+- Multiple users.
+- Additional storage providers.
+- Desktop synchronization.
+- Mobile apps.
+- Offline mode.
+- AI-powered file search.
+
+These must not unnecessarily complicate the V1 architecture.
+
+## 43. Final Product Definition
+
+Pensieve is a single-user, password-protected personal file vault built on top of Google Drive.
+
+```text
+                 PENSIEVE
+                     │
+              Next.js + Tailwind
+                     │
+              Next.js Server/API
+                 /                          /                           ▼              ▼
+        Supabase Postgres   Google Drive
+             │                  │
+             │                  │
+        Metadata              Files
+        Search                Storage
+        Favorites             Contents
+        Folders
+        Activity
+        Password hash
+```
+
+The intended experience is:
+
+```text
+                 Open Pensieve
+                       │
+                       ▼
+                Unlock with password
+                       │
+                       ▼
+                  View your files
+                       │
+          ┌────────────┼────────────┐
+          ▼            ▼            ▼
+        Search       Upload      Organize
+          │            │            │
+          └────────────┼────────────┘
+                       ▼
+                    Download
+```
+
+Pensieve should remain small, fast, private, and practical.
+
+The product exists to make personal file access easier, not to become another complicated cloud-storage platform.
