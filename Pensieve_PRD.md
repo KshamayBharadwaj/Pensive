@@ -835,3 +835,75 @@ Please unlock Pensieve again.
 ```
 
 Never show raw exceptions.
+
+## 32. Loading and Empty States
+
+Examples:
+
+```text
+Loading files...
+Searching...
+Uploading...
+Moving...
+Deleting...
+```
+
+Empty states:
+
+```text
+No files yet.
+
+Upload your first file to get started.
+
+[ Upload File ]
+```
+
+```text
+No favorites yet.
+
+Star files and folders to find them quickly.
+```
+
+```text
+No files found.
+
+Try another search term.
+```
+
+## 33. Responsive Design
+
+Desktop:
+
+```text
+Sidebar + file table
+```
+
+Tablet:
+
+```text
+Compact navigation + file list
+```
+
+Mobile:
+
+```text
+Header
+Search
+File list
+Compact navigation
+```
+
+Do not rely on hover for essential controls.
+
+## 34. Accessibility
+
+The application should:
+
+- Use semantic HTML.
+- Support keyboard navigation.
+- Provide visible focus states.
+- Use accessible labels.
+- Maintain sufficient contrast.
+- Make dialogs keyboard accessible.
+- Avoid unlabeled icon-only buttons.
+- Use ARIA where necessary.
