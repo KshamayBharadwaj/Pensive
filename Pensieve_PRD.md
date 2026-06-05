@@ -1040,3 +1040,82 @@ pensieve/
 - Google Drive production configuration.
 - End-to-end testing.
 - Security review.
+
+## 38. MVP Acceptance Criteria
+
+The MVP is complete when this workflow works:
+
+```text
+Open Pensieve
+      ↓
+First-time setup
+      ↓
+Create password
+      ↓
+Vault initialized
+      ↓
+Login
+      ↓
+See files
+      ↓
+Upload file
+      ↓
+Create folder
+      ↓
+Move file into folder
+      ↓
+Favorite file
+      ↓
+Search file
+      ↓
+Download file
+      ↓
+Rename file
+      ↓
+Delete file
+      ↓
+Logout
+```
+
+## 39. Testing Strategy
+
+### Unit tests
+
+Test:
+
+- Password hashing.
+- Password verification.
+- Session validation.
+- Input validation.
+- Search logic.
+- Metadata mapping.
+
+### Integration tests
+
+Test:
+
+- Supabase operations.
+- Google Drive operations.
+- Upload → metadata creation.
+- Rename synchronization.
+- Move synchronization.
+- Delete synchronization.
+- Search.
+
+### End-to-end tests
+
+Test:
+
+```text
+Setup
+→ Login
+→ Upload
+→ Create folder
+→ Move
+→ Favorite
+→ Search
+→ Download
+→ Rename
+→ Delete
+→ Logout
+```
