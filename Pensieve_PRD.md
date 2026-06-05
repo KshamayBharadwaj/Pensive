@@ -907,3 +907,136 @@ The application should:
 - Make dialogs keyboard accessible.
 - Avoid unlabeled icon-only buttons.
 - Use ARIA where necessary.
+
+## 35. Performance
+
+Priorities:
+
+- Fast initial load.
+- Minimal client JavaScript.
+- Server Components where appropriate.
+- Pagination.
+- Debounced search.
+- Avoid unnecessary Drive API calls.
+- Stream large downloads where practical.
+- Do not load thousands of files at once.
+
+## 36. Suggested Project Structure
+
+```text
+pensieve/
+├── app/
+│   ├── page.tsx
+│   ├── login/
+│   ├── setup/
+│   ├── files/[id]/
+│   ├── settings/
+│   └── api/
+│       ├── auth/
+│       ├── files/
+│       ├── folders/
+│       ├── search/
+│       └── sync/
+│
+├── components/
+│   ├── layout/
+│   ├── auth/
+│   ├── files/
+│   ├── folders/
+│   ├── search/
+│   ├── dialogs/
+│   └── ui/
+│
+├── lib/
+│   ├── auth/
+│   ├── google-drive/
+│   ├── supabase/
+│   ├── db/
+│   ├── validation/
+│   └── utils/
+│
+├── types/
+├── supabase/
+│   └── migrations/
+├── public/
+├── .env.local
+├── .gitignore
+├── package.json
+└── README.md
+```
+
+## 37. Development Phases
+
+### Phase 1 — Foundation
+
+- Create Next.js project.
+- Configure TypeScript.
+- Configure Tailwind.
+- Configure Supabase.
+- Configure environment variables.
+- Create base layout.
+
+### Phase 2 — Authentication
+
+- First-time setup.
+- Password hashing.
+- Login.
+- Logout.
+- Session management.
+- Protected routes.
+- Password change.
+
+### Phase 3 — Google Drive
+
+- Configure Drive API.
+- Authenticate server-side.
+- List files.
+- Upload.
+- Download.
+- Rename.
+- Trash/delete.
+
+### Phase 4 — Metadata
+
+- Create database schema.
+- Store file metadata.
+- Store folders.
+- Store favorites.
+- Store activity.
+- Implement synchronization.
+
+### Phase 5 — File Manager
+
+- All Files.
+- Root files.
+- Folders.
+- Nested folders.
+- Move.
+- Rename.
+- Delete.
+
+### Phase 6 — Organization
+
+- Favorites.
+- Recent.
+- Search.
+- Sorting.
+- Filtering.
+
+### Phase 7 — Polish
+
+- Responsive design.
+- Loading states.
+- Empty states.
+- Error handling.
+- Accessibility.
+- Keyboard support.
+
+### Phase 8 — Deployment
+
+- Vercel deployment.
+- Production environment variables.
+- Database migrations.
+- Google Drive production configuration.
+- End-to-end testing.
+- Security review.
