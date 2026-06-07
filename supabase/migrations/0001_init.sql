@@ -66,3 +66,11 @@ create index if not exists idx_folders_name_trgm on public.folders using gin (na
 
 create index if not exists idx_activity_file on public.activity (file_id);
 create index if not exists idx_activity_created on public.activity (created_at desc);
+
+-- updated_at trigger
+create or replace function public.touch_updated_at() returns trigger as $$
+begin new.updated_at = now(); return new; end; $$ language plpgsql;
+
+drop trigger if exists trg_files_touch on public.files;
+create trigger trg_files_touch before update on public.files
+for each row execute function public.touch_updated_at();
