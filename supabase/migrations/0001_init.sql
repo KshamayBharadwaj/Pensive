@@ -59,3 +59,10 @@ create index if not exists idx_files_folder on public.files (folder_id);
 create index if not exists idx_files_fav on public.files (is_favorite) where is_trashed = false;
 create index if not exists idx_files_trashed on public.files (is_trashed);
 create index if not exists idx_files_gmod on public.files (google_modified_at desc);
+
+create index if not exists idx_folders_drive on public.folders (google_drive_id);
+create index if not exists idx_folders_parent on public.folders (parent_folder_id);
+create index if not exists idx_folders_name_trgm on public.folders using gin (name gin_trgm_ops);
+
+create index if not exists idx_activity_file on public.activity (file_id);
+create index if not exists idx_activity_created on public.activity (created_at desc);
