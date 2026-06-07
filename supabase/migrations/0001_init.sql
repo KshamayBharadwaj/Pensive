@@ -74,3 +74,11 @@ begin new.updated_at = now(); return new; end; $$ language plpgsql;
 drop trigger if exists trg_files_touch on public.files;
 create trigger trg_files_touch before update on public.files
 for each row execute function public.touch_updated_at();
+
+drop trigger if exists trg_folders_touch on public.folders;
+create trigger trg_folders_touch before update on public.folders
+for each row execute function public.touch_updated_at();
+
+drop trigger if exists trg_vault_touch on public.vault_settings;
+create trigger trg_vault_touch before update on public.vault_settings
+for each row execute function public.touch_updated_at();
