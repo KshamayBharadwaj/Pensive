@@ -51,3 +51,11 @@ create table if not exists public.activity (
   action text not null check (action in ('UPLOAD','DOWNLOAD','OPEN','RENAME','MOVE','FAVORITE','UNFAVORITE','DELETE')),
   created_at timestamptz not null default now()
 );
+
+-- Indexes (PRD §25)
+create index if not exists idx_files_drive on public.files (google_drive_id);
+create index if not exists idx_files_name_trgm on public.files using gin (name gin_trgm_ops);
+create index if not exists idx_files_folder on public.files (folder_id);
+create index if not exists idx_files_fav on public.files (is_favorite) where is_trashed = false;
+create index if not exists idx_files_trashed on public.files (is_trashed);
+create index if not exists idx_files_gmod on public.files (google_modified_at desc);
