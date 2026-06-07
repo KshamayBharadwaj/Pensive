@@ -22,3 +22,18 @@ create table if not exists public.folders (
   is_favorite boolean not null default false,
   is_trashed boolean not null default false
 );
+
+create table if not exists public.files (
+  id uuid primary key default gen_random_uuid(),
+  google_drive_id text unique not null,
+  name text not null,
+  mime_type text,
+  size bigint,
+  folder_id uuid references public.folders(id) on delete set null,
+  google_created_at timestamptz,
+  google_modified_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  is_favorite boolean not null default false,
+  is_trashed boolean not null default false
+);
