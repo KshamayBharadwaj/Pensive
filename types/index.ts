@@ -29,3 +29,10 @@ export type FolderRow = {
   is_favorite: boolean;
   is_trashed: boolean;
 };
+
+export type ActivityRow = {
+  id: string;
+  file_id: string | null;
+  action: ActivityAction;
+  created_at: string;
+};
