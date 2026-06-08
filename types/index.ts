@@ -36,3 +36,13 @@ export type ActivityRow = {
   action: ActivityAction;
   created_at: string;
 };
+
+export type ActivityAction =
+  | "UPLOAD"
+  | "DOWNLOAD"
+  | "OPEN"
+  | "RENAME"
+  | "MOVE"
+  | "FAVORITE"
+  | "UNFAVORITE"
+  | "DELETE";
