@@ -18,3 +18,14 @@ export type FileRow = {
   is_favorite: boolean;
   is_trashed: boolean;
 };
+
+export type FolderRow = {
+  id: string;
+  google_drive_id: string | null;
+  name: string;
+  parent_folder_id: string | null;
+  created_at: string;
+  updated_at: string;
+  is_favorite: boolean;
+  is_trashed: boolean;
+};
