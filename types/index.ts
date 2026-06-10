@@ -51,3 +51,13 @@ export type VaultView = "all" | "recent" | "favorites";
 
 export type SortKey = "name" | "modified" | "created" | "size" | "type";
 export type SortDir = "asc" | "desc";
+
+export type FileFilter =
+  | "all"
+  | "documents"
+  | "images"
+  | "videos"
+  | "audio"
+  | "archives"
+  | "code"
+  | "favorites";
