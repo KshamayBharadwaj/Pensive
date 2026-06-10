@@ -46,3 +46,5 @@ export type ActivityAction =
   | "FAVORITE"
   | "UNFAVORITE"
   | "DELETE";
+
+export type VaultView = "all" | "recent" | "favorites";
