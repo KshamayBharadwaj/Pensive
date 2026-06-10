@@ -48,3 +48,6 @@ export type ActivityAction =
   | "DELETE";
 
 export type VaultView = "all" | "recent" | "favorites";
+
+export type SortKey = "name" | "modified" | "created" | "size" | "type";
+export type SortDir = "asc" | "desc";
