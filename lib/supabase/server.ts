@@ -7,3 +7,7 @@ export function supabaseAdmin() {
   if (!url || !key) throw new Error("Supabase server env vars are not configured.");
   return createClient(url, key, { auth: { persistSession: false } });
 }
+
+export function isSupabaseConfigured(): boolean {
+  return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+}
