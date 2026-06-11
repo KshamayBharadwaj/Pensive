@@ -9,3 +9,5 @@ export const setupSchema = z.object({
   message: "Passwords do not match.",
   path: ["confirmPassword"],
 });
+
+export const loginSchema = z.object({ password: z.string().min(1, "Password is required.") });
