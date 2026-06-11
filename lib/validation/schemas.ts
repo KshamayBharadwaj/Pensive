@@ -20,3 +20,6 @@ export const changePasswordSchema = z.object({
   message: "Passwords do not match.",
   path: ["confirmPassword"],
 });
+
+export const folderNameSchema = z.string().trim().min(1, "Name is required.").max(255)
+  .refine((v) => !v.includes("/") && !v.includes("\\"), "Name cannot contain slashes.");
