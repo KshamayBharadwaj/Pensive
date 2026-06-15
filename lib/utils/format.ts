@@ -7,3 +7,14 @@ export function formatBytes(bytes: number | null | undefined): string {
   const v = bytes / Math.pow(k, i);
   return `${v >= 100 ? Math.round(v) : v.toFixed(1)} ${sizes[i]}`;
 }
+
+export function formatDate(iso: string | null | undefined): string {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "—";
+  return d.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: d.getFullYear() === new Date().getFullYear() ? undefined : "numeric",
+  });
+}
