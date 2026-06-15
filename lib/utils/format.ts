@@ -29,3 +29,12 @@ export function formatDateTime(iso: string | null | undefined): string {
     year: "numeric",
   });
 }
+
+export type FileCategory =
+  | "documents"
+  | "images"
+  | "videos"
+  | "audio"
+  | "archives"
+  | "code"
+  | "other";
