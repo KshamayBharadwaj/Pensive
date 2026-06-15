@@ -18,3 +18,14 @@ export function formatDate(iso: string | null | undefined): string {
     year: d.getFullYear() === new Date().getFullYear() ? undefined : "numeric",
   });
 }
+
+export function formatDateTime(iso: string | null | undefined): string {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "—";
+  return d.toLocaleString(undefined, {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
