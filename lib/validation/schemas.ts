@@ -25,3 +25,14 @@ export const folderNameSchema = z.string().trim().min(1, "Name is required.").ma
   .refine((v) => !v.includes("/") && !v.includes("\\"), "Name cannot contain slashes.");
 
 export const uuidSchema = z.string().uuid();
+
+export const filesQuerySchema = z.object({
+  folderId: z.string().nullable().optional(),
+  view: z.enum(["all", "recent", "favorites"]).default("all"),
+  sort: z.enum(["name", "modified", "created", "size", "type"]).default("modified"),
+  order: z.enum(["asc", "desc"]).default("desc"),
+  filter: z.enum(["all", "documents", "images", "videos", "audio", "archives", "code", "favorites"]).default("all"),
+  q: z.string().max(200).optional(),
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(200).default(100),
+});
