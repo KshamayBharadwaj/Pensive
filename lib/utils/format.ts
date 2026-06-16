@@ -60,3 +60,20 @@ export function categorize(mime: string | null | undefined, name: string): FileC
   ) return "code";
   return "other";
 }
+
+export function friendlyType(mime: string | null | undefined, name: string): string {
+  if (!mime) {
+    const ext = name.split(".").pop()?.toUpperCase();
+    return ext ? `${ext} file` : "File";
+  }
+  if (mime === "application/pdf") return "PDF document";
+  if (mime.includes("wordprocessingml") || mime === "application/msword") return "Word document";
+  if (mime.includes("spreadsheetml") || mime === "application/vnd.ms-excel") return "Spreadsheet";
+  if (mime.includes("presentationml")) return "Presentation";
+  if (mime.startsWith("image/")) return "Image";
+  if (mime.startsWith("video/")) return "Video";
+  if (mime.startsWith("audio/")) return "Audio";
+  if (mime.includes("zip")) return "ZIP archive";
+  if (mime.startsWith("text/")) return "Text file";
+  return mime;
+}
