@@ -38,3 +38,25 @@ export type FileCategory =
   | "archives"
   | "code"
   | "other";
+
+export function categorize(mime: string | null | undefined, name: string): FileCategory {
+  const m = (mime ?? "").toLowerCase();
+  const ext = name.split(".").pop()?.toLowerCase() ?? "";
+  if (m.startsWith("image/")) return "images";
+  if (m.startsWith("video/")) return "videos";
+  if (m.startsWith("audio/")) return "audio";
+  if (
+    m.includes("zip") || m.includes("tar") || m.includes("rar") ||
+    m.includes("7z") || m.includes("gzip") ||
+    ["zip", "rar", "7z", "tar", "gz"].includes(ext)
+  ) return "archives";
+  if (
+    m.startsWith("text/") || m.includes("pdf") || m.includes("document") ||
+    m.includes("sheet") || m.includes("presentation") ||
+    ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "md", "csv"].includes(ext)
+  ) return "documents";
+  if (
+    ["js", "ts", "tsx", "jsx", "py", "java", "c", "cpp", "go", "rs", "json", "html", "css", "sql", "sh"].includes(ext)
+  ) return "code";
+  return "other";
+}
