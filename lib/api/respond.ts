@@ -16,3 +16,21 @@ export function clientIp(req: Request): string {
 }
 
 /** Guard for protected routes. Returns null and sends 401 when unauthenticated. */
+export async function guard() {
+  try {
+    const r = await requireSession(getPasswordUpdatedAt);
+    if (!r.ok) {
+      const msg =
+        r.error === "UNINITIALIZED"
+          ? "Vault is not initialized."
+          : "Your session has expired. Please unlock Pensieve again.";
+      return { authed: false as const, response: fail("UNAUTHENTICATED", msg, 401) };
+    }
+    return { authed: true as const };
+  } catch {
+    return {
+      authed: false as const,
+      response: fail("SERVICE_UNAVAILABLE", "Service is temporarily unavailable.", 503),
+    };
+  }
+}
