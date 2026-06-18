@@ -34,3 +34,14 @@ export async function guard() {
     };
   }
 }
+
+export function toUserError(e: unknown): { code: string; message: string; status: number } {
+  const err = e as { name?: string; message?: string };
+  if (err?.name === "DriveUnavailableError") {
+    return { code: "DRIVE_UNAVAILABLE", message: "Google Drive is currently unavailable. Please try again later.", status: 502 };
+  }
+  if (String(err?.message ?? "").includes("not configured")) {
+    return { code: "NOT_CONFIGURED", message: "Server storage is not configured. Check environment variables.", status: 500 };
+  }
+  return { code: "INTERNAL", message: "Unable to complete the request. Please try again.", status: 500 };
+}
