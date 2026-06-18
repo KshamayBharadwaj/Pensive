@@ -25,3 +25,7 @@ export function loginRateLimit(key: string): { allowed: boolean; retryAfterSec: 
   }
   return { allowed: true, retryAfterSec: 0 };
 }
+
+export function loginSucceeded(key: string) {
+  attempts.delete(key);
+}
