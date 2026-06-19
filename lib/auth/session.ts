@@ -28,3 +28,13 @@ export async function signSession(pwdUpdatedAt: string): Promise<string> {
     .setExpirationTime(now + SESSION_TTL_SECONDS)
     .sign(getSecret());
 }
+
+export async function verifySessionToken(token: string): Promise<SessionPayload | null> {
+  try {
+    const { payload } = await jose.jwtVerify(token, getSecret());
+    if (payload.sub !== "vault" || typeof payload.pwd !== "string") return null;
+    return payload as unknown as SessionPayload;
+  } catch {
+    return null;
+  }
+}
