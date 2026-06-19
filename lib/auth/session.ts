@@ -20,3 +20,11 @@ export type SessionPayload = {
 };
 
 /** Create a signed session JWT. pwd = vault_settings.updated_at */
+export async function signSession(pwdUpdatedAt: string): Promise<string> {
+  const now = Math.floor(Date.now() / 1000);
+  return await new jose.SignJWT({ sub: "vault", pwd: pwdUpdatedAt })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt(now)
+    .setExpirationTime(now + SESSION_TTL_SECONDS)
+    .sign(getSecret());
+}
