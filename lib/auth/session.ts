@@ -9,3 +9,14 @@ function getSecret(): Uint8Array {
   if (s.length < 32) throw new Error("SESSION_SECRET must be at least 32 characters.");
   return new TextEncoder().encode(s);
 }
+
+export type SessionPayload = {
+  /** "authenticated" marker — single-user vault, no user id */
+  sub: "vault";
+  /** password updatedAt at issue time; used to invalidate old sessions after change */
+  pwd: string;
+  iat: number;
+  exp: number;
+};
+
+/** Create a signed session JWT. pwd = vault_settings.updated_at */
