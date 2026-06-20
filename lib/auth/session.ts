@@ -58,3 +58,9 @@ export async function clearSessionCookie() {
     maxAge: 0,
   });
 }
+
+export async function getSessionToken(): Promise<string | null> {
+  return cookies().get(SESSION_COOKIE)?.value ?? null;
+}
+
+/** Verify cookie session AND that password hasn't changed since issue. */
