@@ -64,3 +64,16 @@ export async function getSessionToken(): Promise<string | null> {
 }
 
 /** Verify cookie session AND that password hasn't changed since issue. */
+export async function requireSession(getPwdUpdatedAt: () => Promise<string | null>) {
+  const token = await getSessionToken();
+  if (!token) return { ok: false as const, error: "UNAUTHENTICATED" };
+  const payload = await verifySessionToken(token);
+  if (!payload) return { ok: false as const, error: "UNAUTHENTICATED" };
+  const current = await getPwdUpdatedAt();
+  if (!current) return { ok: false as const, error: "UNINITIALIZED" };
+  // If password changed after token issue (second precision), reject.
+  if (new Date(payload.iat * 1000) < new Date(current)) {
+    return { ok: false as const, error: "SESSION_EXPIRED" };
+  }
+  return { ok: true as const, payload };
+}
