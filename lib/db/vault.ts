@@ -13,3 +13,11 @@ export async function getVaultSettings(): Promise<VaultSettings | null> {
   if (error) throw error;
   return data as VaultSettings | null;
 }
+
+export async function isVaultInitialized(): Promise<boolean> {
+  try {
+    return (await getVaultSettings()) !== null;
+  } catch {
+    return false;
+  }
+}
