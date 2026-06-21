@@ -21,3 +21,8 @@ export async function isVaultInitialized(): Promise<boolean> {
     return false;
   }
 }
+
+export async function getPasswordUpdatedAt(): Promise<string | null> {
+  const v = await getVaultSettings();
+  return v?.updated_at ?? null;
+}
