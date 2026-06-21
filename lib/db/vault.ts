@@ -26,3 +26,14 @@ export async function getPasswordUpdatedAt(): Promise<string | null> {
   const v = await getVaultSettings();
   return v?.updated_at ?? null;
 }
+
+export async function createVaultSettings(passwordHash: string): Promise<VaultSettings> {
+  const db = supabaseAdmin();
+  const { data, error } = await db
+    .from("vault_settings")
+    .insert({ password_hash: passwordHash })
+    .select()
+    .single();
+  if (error) throw error;
+  return data as VaultSettings;
+}
