@@ -33,3 +33,13 @@ export class DriveUnavailableError extends Error {
     this.name = "DriveUnavailableError";
   }
 }
+
+function wrap<T>(p: Promise<T>): Promise<T> {
+  return p.catch((e: unknown) => {
+    const err = e as { code?: number; message?: string };
+    if (err?.code === 401 || err?.code === 403) {
+      throw new DriveUnavailableError("Google Drive authorization failed. Check server credentials.");
+    }
+    throw new DriveUnavailableError(err?.message ?? "Google Drive request failed.");
+  });
+}
