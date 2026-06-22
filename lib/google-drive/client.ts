@@ -17,3 +17,8 @@ export function getOAuthClient(): OAuth2Client {
   oauth.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
   return oauth;
 }
+
+export function getDrive(): drive_v3.Drive {
+  if (!isDriveConfigured()) throw new Error("Google Drive is not configured.");
+  return google.drive({ version: "v3", auth: getOAuthClient() });
+}
