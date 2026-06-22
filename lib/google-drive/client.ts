@@ -22,3 +22,7 @@ export function getDrive(): drive_v3.Drive {
   if (!isDriveConfigured()) throw new Error("Google Drive is not configured.");
   return google.drive({ version: "v3", auth: getOAuthClient() });
 }
+
+export function driveRootId(): string | undefined {
+  return process.env.GOOGLE_DRIVE_ROOT_FOLDER_ID || undefined;
+}
