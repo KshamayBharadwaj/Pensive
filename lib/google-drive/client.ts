@@ -26,3 +26,10 @@ export function getDrive(): drive_v3.Drive {
 export function driveRootId(): string | undefined {
   return process.env.GOOGLE_DRIVE_ROOT_FOLDER_ID || undefined;
 }
+
+export class DriveUnavailableError extends Error {
+  constructor(message = "Google Drive is currently unavailable. Please try again later.") {
+    super(message);
+    this.name = "DriveUnavailableError";
+  }
+}
