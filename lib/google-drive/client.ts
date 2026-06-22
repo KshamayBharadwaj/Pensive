@@ -8,3 +8,12 @@ export function isDriveConfigured(): boolean {
     process.env.GOOGLE_REFRESH_TOKEN
   );
 }
+
+export function getOAuthClient(): OAuth2Client {
+  const oauth = new google.auth.OAuth2(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET
+  );
+  oauth.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
+  return oauth;
+}
