@@ -43,3 +43,14 @@ function wrap<T>(p: Promise<T>): Promise<T> {
     throw new DriveUnavailableError(err?.message ?? "Google Drive request failed.");
   });
 }
+
+export type DriveFile = {
+  id: string;
+  name: string;
+  mimeType: string;
+  size?: number;
+  parents?: string[];
+  createdTime?: string;
+  modifiedTime?: string;
+  trashed?: boolean;
+};
