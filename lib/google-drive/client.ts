@@ -79,3 +79,25 @@ export async function driveList(folderDriveId?: string | null, pageSize = 100): 
     trashed: f.trashed ?? false,
   }));
 }
+
+export async function driveCreateFolder(name: string, parentDriveId?: string | null): Promise<DriveFile> {
+  const drive = getDrive();
+  const parent = parentDriveId ?? driveRootId() ?? "root";
+  const res = await wrap(
+    drive.files.create({
+      requestBody: {
+        name,
+        mimeType: "application/vnd.google-apps.folder",
+        parents: [parent],
+      },
+      fields: "id,name,mimeType,createdTime,modifiedTime",
+    })
+  );
+  return {
+    id: res.data.id!,
+    name: res.data.name!,
+    mimeType: "application/vnd.google-apps.folder",
+    createdTime: res.data.createdTime ?? undefined,
+    modifiedTime: res.data.modifiedTime ?? undefined,
+  };
+}
