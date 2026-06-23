@@ -127,3 +127,17 @@ export async function driveUpload(
     modifiedTime: res.data.modifiedTime ?? undefined,
   };
 }
+
+export async function driveDownload(fileId: string): Promise<{ bytes: Buffer; name: string; mimeType: string }> {
+  const drive = getDrive();
+  const meta = await wrap(drive.files.get({ fileId, fields: "id,name,mimeType,size" }));
+  const res = await wrap(
+    drive.files.get({ fileId, alt: "media" }, { responseType: "arraybuffer" })
+  );
+  const buf = Buffer.from(res.data as ArrayBuffer);
+  return {
+    bytes: buf,
+    name: meta.data.name ?? "download",
+    mimeType: meta.data.mimeType ?? "application/octet-stream",
+  };
+}
