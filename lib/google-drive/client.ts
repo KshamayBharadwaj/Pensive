@@ -141,3 +141,8 @@ export async function driveDownload(fileId: string): Promise<{ bytes: Buffer; na
     mimeType: meta.data.mimeType ?? "application/octet-stream",
   };
 }
+
+export async function driveRename(fileId: string, name: string) {
+  const drive = getDrive();
+  await wrap(drive.files.update({ fileId, requestBody: { name }, fields: "id,name" }));
+}
