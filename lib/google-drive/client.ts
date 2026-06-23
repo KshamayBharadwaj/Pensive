@@ -101,3 +101,29 @@ export async function driveCreateFolder(name: string, parentDriveId?: string | n
     modifiedTime: res.data.modifiedTime ?? undefined,
   };
 }
+
+export async function driveUpload(
+  name: string,
+  mimeType: string,
+  bytes: Buffer,
+  parentDriveId?: string | null
+): Promise<DriveFile> {
+  const drive = getDrive();
+  const { Readable } = await import("stream");
+  const parent = parentDriveId ?? driveRootId() ?? "root";
+  const res = await wrap(
+    drive.files.create({
+      requestBody: { name, parents: [parent] },
+      media: { mimeType, body: Readable.from(bytes) },
+      fields: "id,name,mimeType,size,createdTime,modifiedTime",
+    })
+  );
+  return {
+    id: res.data.id!,
+    name: res.data.name!,
+    mimeType: res.data.mimeType ?? mimeType,
+    size: res.data.size ? Number(res.data.size) : bytes.length,
+    createdTime: res.data.createdTime ?? undefined,
+    modifiedTime: res.data.modifiedTime ?? undefined,
+  };
+}
