@@ -54,3 +54,28 @@ export type DriveFile = {
   modifiedTime?: string;
   trashed?: boolean;
 };
+
+export async function driveList(folderDriveId?: string | null, pageSize = 100): Promise<DriveFile[]> {
+  const drive = getDrive();
+  const parent = folderDriveId ?? driveRootId() ?? "root";
+  // NOTE: when using a dedicated root folder, Drive children use `'id' in parents`.
+  const q = `'${parent.replace(/'/g, "")}' in parents and trashed = false`;
+  const res = await wrap(
+    drive.files.list({
+      q,
+      pageSize,
+      fields: "files(id,name,mimeType,size,parents,createdTime,modifiedTime,trashed)",
+      orderBy: "modifiedTime desc",
+    })
+  );
+  return (res.data.files ?? []).map((f) => ({
+    id: f.id!,
+    name: f.name!,
+    mimeType: f.mimeType ?? "application/octet-stream",
+    size: f.size ? Number(f.size) : undefined,
+    parents: f.parents ?? undefined,
+    createdTime: f.createdTime ?? undefined,
+    modifiedTime: f.modifiedTime ?? undefined,
+    trashed: f.trashed ?? false,
+  }));
+}
