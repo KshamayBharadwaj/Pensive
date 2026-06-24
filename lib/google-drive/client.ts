@@ -146,3 +146,22 @@ export async function driveRename(fileId: string, name: string) {
   const drive = getDrive();
   await wrap(drive.files.update({ fileId, requestBody: { name }, fields: "id,name" }));
 }
+
+export async function driveMove(fileId: string, newParentDriveId: string | null, oldParentDriveId?: string | null) {
+  const drive = getDrive();
+  const newParent = newParentDriveId ?? driveRootId() ?? "root";
+  let removeParents: string | undefined;
+  if (oldParentDriveId) removeParents = oldParentDriveId;
+  else {
+    const meta = await wrap(drive.files.get({ fileId, fields: "parents" }));
+    removeParents = (meta.data.parents ?? []).join(",");
+  }
+  await wrap(
+    drive.files.update({
+      fileId,
+      addParents: newParent,
+      removeParents: removeParents || undefined,
+      fields: "id,parents",
+    })
+  );
+}
