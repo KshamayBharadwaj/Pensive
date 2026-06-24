@@ -165,3 +165,8 @@ export async function driveMove(fileId: string, newParentDriveId: string | null,
     })
   );
 }
+
+export async function driveTrash(fileId: string) {
+  const drive = getDrive();
+  await wrap(drive.files.update({ fileId, requestBody: { trashed: true }, fields: "id" }));
+}
