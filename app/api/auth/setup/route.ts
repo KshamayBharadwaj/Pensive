@@ -30,3 +30,14 @@ export async function POST(req: Request) {
     return fail("SETUP_FAILED", "Unable to create the vault. Please try again.", 500);
   }
 }
+
+export async function GET() {
+  try {
+    const existing = await getVaultSettings().catch(() => null);
+    const pwd = await getPasswordUpdatedAt().catch(() => null);
+    void pwd;
+    return ok({ initialized: existing !== null });
+  } catch {
+    return fail("DB_UNAVAILABLE", "Database is unavailable.", 503);
+  }
+}
