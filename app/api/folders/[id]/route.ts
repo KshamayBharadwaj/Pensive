@@ -18,3 +18,7 @@ export async function GET(_req: Request, { params }: Ctx) {
     return fail(u.code, u.message, u.status);
   }
 }
+
+export async function PATCH(req: Request, { params }: Ctx) {
+  return renameFolderById(req, params.id);
+}
