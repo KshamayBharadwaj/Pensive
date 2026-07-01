@@ -21,3 +21,17 @@ export async function POST(req: Request, { params }: Ctx) {
     return fail(u.code, u.message, u.status);
   }
 }
+
+export async function DELETE(_req: Request, { params }: Ctx) {
+  const g = await guard();
+  if (!g.authed) return g.response;
+  try {
+    const db = supabaseAdmin();
+    const { data, error } = await db.from("folders").update({ is_favorite: false }).eq("id", params.id).select().single();
+    if (error) throw error;
+    return ok({ folder: data });
+  } catch (e) {
+    const u = toUserError(e);
+    return fail(u.code, u.message, u.status);
+  }
+}
