@@ -39,3 +39,16 @@ export function Field({ label, children, error }: { label: string; children: Rea
     </label>
   );
 }
+
+export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
+  return (
+    <input
+      {...props}
+      className={cn(
+        "w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm",
+        "placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none",
+        props.className
+      )}
+    />
+  );
+}
