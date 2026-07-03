@@ -29,3 +29,13 @@ export function Button({
     </button>
   );
 }
+
+export function Field({ label, children, error }: { label: string; children: React.ReactNode; error?: string }) {
+  return (
+    <label className="block">
+      <span className="block text-sm font-medium text-zinc-700 mb-1">{label}</span>
+      {children}
+      {error ? <span className="block text-sm text-red-700 mt-1" role="alert">{error}</span> : null}
+    </label>
+  );
+}
