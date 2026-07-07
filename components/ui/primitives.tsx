@@ -95,3 +95,7 @@ export function useAsync() {
   }
   return { loading, error, setError, run };
 }
+
+export function useRequireNothing() {
+  return useRouter();
+}
