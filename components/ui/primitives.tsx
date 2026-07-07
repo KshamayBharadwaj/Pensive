@@ -52,3 +52,18 @@ export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
     />
   );
 }
+
+export function Modal({ title, children, onClose }: { title: string; children: React.ReactNode; onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={title}>
+      <div className="absolute inset-0 bg-black/30" onClick={onClose} aria-hidden="true" />
+      <div className="relative w-full max-w-md rounded-lg border border-zinc-200 bg-white p-5 max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-base font-semibold">{title}</h2>
+          <button onClick={onClose} aria-label="Close dialog" className="rounded px-2 py-1 text-zinc-500 hover:bg-zinc-100">✕</button>
+        </div>
+        {children}
+      </div>
+    </div>
+  );
+}
