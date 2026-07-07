@@ -77,3 +77,21 @@ export function EmptyState({ title, body, action }: { title: string; body: strin
     </div>
   );
 }
+
+export function useAsync() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  async function run<T>(fn: () => Promise<T>): Promise<T | null> {
+    setLoading(true);
+    setError(null);
+    try {
+      return await fn();
+    } catch (e) {
+      setError((e as Error)?.message ?? "Something went wrong.");
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }
+  return { loading, error, setError, run };
+}
