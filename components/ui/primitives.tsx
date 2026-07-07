@@ -67,3 +67,13 @@ export function Modal({ title, children, onClose }: { title: string; children: R
     </div>
   );
 }
+
+export function EmptyState({ title, body, action }: { title: string; body: string; action?: React.ReactNode }) {
+  return (
+    <div className="flex flex-col items-center justify-center py-16 text-center">
+      <p className="text-base font-medium text-zinc-900">{title}</p>
+      <p className="mt-1 max-w-sm text-sm text-zinc-500">{body}</p>
+      {action ? <div className="mt-4">{action}</div> : null}
+    </div>
+  );
+}
