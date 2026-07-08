@@ -94,3 +94,77 @@ function iconFor(mime: string | null): string {
   if (m.includes("word") || m.includes("document")) return "📝";
   return "📄";
 }
+
+function RowMenu(props: {
+  starred: boolean;
+  downloadHref?: string;
+  onOpen?: () => void;
+  onFav: () => void;
+  onRename: () => void;
+  onMove: () => void;
+  onDelete: () => void;
+  onDetails?: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+
+  // Close the menu on scroll/resize so the fixed position never goes stale
+  useEffect(() => {
+    if (!open) return;
+    const close = () => { setOpen(false); setPos(null); };
+    window.addEventListener("scroll", close, true);
+    window.addEventListener("resize", close);
+    return () => {
+      window.removeEventListener("scroll", close, true);
+      window.removeEventListener("resize", close);
+    };
+  }, [open ]);
+
+  function toggle(e: React.MouseEvent<HTMLButtonElement>) {
+    if (open) {
+      setOpen(false);
+      setPos(null);
+      return;
+    }
+    const rect = e.currentTarget.getBoundingClientRect();
+    setPos({
+      top: rect.bottom + 4,
+      left: Math.max(8, Math.min(rect.right - 160, window.innerWidth - 168)),
+    });
+    setOpen(true);
+  }
+
+  function close() {
+    setOpen(false);
+    setPos(null);
+  }
+
+  return (
+    <span className="inline-block text-left">
+      <button onClick={toggle} aria-label="File actions" aria-expanded={open}
+        className="rounded border border-zinc-200 px-2 py-1 text-zinc-600 hover:bg-zinc-100">⋯</button>
+      {open && pos ? (
+        <>
+          <span className="fixed inset-0 z-30" onClick={close} />
+          <span
+            className="fixed z-40 w-40 rounded-md border border-zinc-200 bg-white py-1 text-sm"
+            style={{ top: pos.top, left: pos.left }}
+            role="menu"
+          >
+            {props.onOpen ? <MenuItem onClick={() => { close(); props.onOpen!(); }}>Open</MenuItem> : null}
+            {props.downloadHref ? <a href={props.downloadHref} className="block px-3 py-1.5 hover:bg-zinc-100" onClick={close} role="menuitem">Download</a> : null}
+            {props.onDetails ? <MenuItem onClick={() => { close(); props.onDetails!(); }}>Details</MenuItem> : null}
+            <MenuItem onClick={() => { close(); props.onFav(); }}>{props.starred ? "★ Unfavorite" : "☆ Favorite"}</MenuItem>
+            <MenuItem onClick={() => { close(); props.onRename(); }}>Rename</MenuItem>
+            <MenuItem onClick={() => { close(); props.onMove(); }}>Move</MenuItem>
+            <MenuItem onClick={() => { close(); props.onDelete(); }}>Delete</MenuItem>
+          </span>
+        </>
+      ) : null}
+    </span>
+  );
+}
+
+function MenuItem({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
+  return <button onClick={onClick} className="block w-full px-3 py-1.5 text-left hover:bg-zinc-100">{children}</button>;
+}
