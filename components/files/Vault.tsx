@@ -81,3 +81,16 @@ function FolderItem({ folder, all, depth, activeId, trail, onOpen }: {
     </li>
   );
 }
+
+function iconFor(mime: string | null): string {
+  const m = (mime ?? "").toLowerCase();
+  if (m.startsWith("image/")) return "🖼️";
+  if (m.startsWith("video/")) return "🎬";
+  if (m.startsWith("audio/")) return "🎵";
+  if (m.includes("pdf")) return "📕";
+  if (m.includes("zip") || m.includes("archive")) return "📦";
+  if (m.includes("sheet") || m.includes("excel") || m.includes("csv")) return "📊";
+  if (m.includes("presentation")) return "📽️";
+  if (m.includes("word") || m.includes("document")) return "📝";
+  return "📄";
+}
