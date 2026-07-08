@@ -27,3 +27,21 @@ function useDebounced(value: string, ms: number) {
   }, [value, ms]);
   return v;
 }
+
+function SideBtn({ active, onClick, children }: { active?: boolean; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button onClick={onClick}
+      className={`block w-full rounded-md px-2 py-1.5 text-left hover:bg-zinc-100 ${active ? "bg-zinc-100 font-semibold text-zinc-900" : "text-zinc-700"}`}>
+      {children}
+    </button>
+  );
+}
+
+function MenuNavBtn({ active, onClick, children }: { active?: boolean; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button onClick={onClick}
+      className={`block w-full rounded-md px-2 py-2 text-left hover:bg-zinc-100 ${active ? "bg-zinc-100 font-semibold text-zinc-900" : "text-zinc-700"}`}>
+      {children}
+    </button>
+  );
+}
