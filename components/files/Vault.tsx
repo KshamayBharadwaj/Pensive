@@ -168,3 +168,152 @@ function RowMenu(props: {
 function MenuItem({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
   return <button onClick={onClick} className="block w-full px-3 py-1.5 text-left hover:bg-zinc-100">{children}</button>;
 }
+
+function NewFolderDialog({ parentId, onClose, onCreated }: { parentId: string | null; onClose: () => void; onCreated: () => void }) {
+  const [name, setName] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      await api("/api/folders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name.trim(), parentFolderId: parentId }),
+      });
+      onClose();
+      onCreated();
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  return (
+    <Modal title="New folder" onClose={onClose}>
+      <form onSubmit={submit} className="space-y-3">
+        <TextInput aria-label="Folder name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Folder name" required autoFocus />
+        {error ? <p className="text-sm text-red-700" role="alert">{error}</p> : null}
+        <div className="flex justify-end gap-2">
+          <Button variant="secondary" onClick={onClose}>Cancel</Button>
+          <Button type="submit" disabled={loading}>{loading ? "Creating…" : "Create"}</Button>
+        </div>
+      </form>
+    </Modal>
+  );
+}
+
+function RenameDialog({ target, onClose, onDone }: { target: { kind: "file" | "folder"; id: string; name: string }; onClose: () => void; onDone: () => void }) {
+  const [name, setName] = useState(target.name);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      const url = target.kind === "file" ? `/api/files/${target.id}/rename` : `/api/folders/${target.id}/rename`;
+      await api(url, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: name.trim() }) });
+      onDone();
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  return (
+    <Modal title={`Rename ${target.kind}`} onClose={onClose}>
+      <form onSubmit={submit} className="space-y-3">
+        <TextInput aria-label="New name" value={name} onChange={(e) => setName(e.target.value)} required autoFocus />
+        {error ? <p className="text-sm text-red-700" role="alert">{error}</p> : null}
+        <div className="flex justify-end gap-2">
+          <Button variant="secondary" onClick={onClose}>Cancel</Button>
+          <Button type="submit" disabled={loading}>{loading ? "Renaming…" : "Rename"}</Button>
+        </div>
+      </form>
+    </Modal>
+  );
+}
+
+function MoveDialog({ target, folders, currentFolderId, onClose, onDone }: {
+  target: { kind: "file" | "folder"; id: string; name: string };
+  folders: FolderRow[];
+  currentFolderId: string | null;
+  onClose: () => void;
+  onDone: () => void;
+}) {
+  const [dest, setDest] = useState<string | "">("");
+  const [touched, setTouched] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const selected: string | null = !touched ? (currentFolderId ?? "") : dest === "" && touched ? "" : dest || null;
+  void selected;
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      const folderId = dest === "__root__" ? null : dest === "" ? null : dest;
+      const url = target.kind === "file" ? `/api/files/${target.id}/move` : `/api/folders/${target.id}/move`;
+      const body = target.kind === "file" ? { folderId } : { parentFolderId: folderId };
+      await api(url, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      onDone();
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  const options = folders.filter((f) => f.id !== target.id);
+  return (
+    <Modal title={`Move ${target.name}`} onClose={onClose}>
+      <form onSubmit={submit} className="space-y-3">
+        <label className="block text-sm">
+          <span className="mb-1 block font-medium text-zinc-700">Destination folder</span>
+          <select aria-label="Destination folder" value={dest} onChange={(e) => { setDest(e.target.value); setTouched(true); }}
+            className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
+            <option value="">Select…</option>
+            <option value="__root__">Root (no folder)</option>
+            {options.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
+          </select>
+        </label>
+        {error ? <p className="text-sm text-red-700" role="alert">{error}</p> : null}
+        <div className="flex justify-end gap-2">
+          <Button variant="secondary" onClick={onClose}>Cancel</Button>
+          <Button type="submit" disabled={loading || !touched}>{loading ? "Moving…" : "Move"}</Button>
+        </div>
+      </form>
+    </Modal>
+  );
+}
+
+function FileDetails({ file, onClose, onFav, onRename, onMove, onDelete }: {
+  file: FileRow;
+  onClose: () => void;
+  onFav: () => void;
+  onRename: () => void;
+  onMove: () => void;
+  onDelete: () => void;
+}) {
+  return (
+    <Modal title="File details" onClose={onClose}>
+      <h3 className="break-all text-base font-semibold">{file.name}</h3>
+      <dl className="mt-4 space-y-2 text-sm">
+        <div className="flex justify-between gap-4"><dt className="text-zinc-500">Type</dt><dd>{friendlyType(file.mime_type, file.name)}</dd></div>
+        <div className="flex justify-between gap-4"><dt className="text-zinc-500">Size</dt><dd>{formatBytes(file.size)}</dd></div>
+        <div className="flex justify-between gap-4"><dt className="text-zinc-500">Created</dt><dd>{formatDateTime(file.google_created_at ?? file.created_at)}</dd></div>
+        <div className="flex justify-between gap-4"><dt className="text-zinc-500">Modified</dt><dd>{formatDateTime(file.google_modified_at ?? file.updated_at)}</dd></div>
+        <div className="flex justify-between gap-4"><dt className="text-zinc-500">Favorite</dt><dd>{file.is_favorite ? "Yes ★" : "No"}</dd></div>
+      </dl>
+      <div className="mt-5 flex flex-wrap gap-2">
+        <a href={`/api/files/${file.id}/download`} className="inline-flex items-center rounded-md border border-zinc-900 bg-zinc-900 px-3 py-2 text-sm font-medium text-white">Download</a>
+        <Button variant="secondary" onClick={onFav}>{file.is_favorite ? "Unfavorite" : "Favorite"}</Button>
+        <Button variant="secondary" onClick={onRename}>Rename</Button>
+        <Button variant="secondary" onClick={onMove}>Move</Button>
+        <Button variant="danger" onClick={onDelete}>Delete</Button>
+      </div>
+    </Modal>
+  );
+}
