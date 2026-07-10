@@ -57,3 +57,7 @@ Success: `{ "success": true, "data": {} }`. Error: `{ "success": false, "error":
 - Google + Supabase service keys stay server-side; only `NEXT_PUBLIC_*` is public.
 - Upload creates metadata only after Drive succeeds; folder delete refuses non-empty without explicit force.
 - Search uses Supabase metadata (debounced), never Drive per keystroke.
+
+## Deploy (Vercel)
+
+Set all env vars in Vercel → deploy → run migration → verify setup→login→upload→download flow → review logs for Drive/Supabase errors.
