@@ -27,3 +27,7 @@ Single-user, password-protected file vault. Files live in **Google Drive**; meta
 
 1. Create OAuth client (Desktop or Web) in Google Cloud Console, enable **Google Drive API**.
 2. Exchange an auth code with `https://www.googleapis.com/auth/drive` scope, store the refresh token in `GOOGLE_REFRESH_TOKEN`. Never expose it to the browser.
+
+## MVP workflow
+
+Setup → Login → See files → Upload → Create folder → Move → Favorite → Search → Download → Rename → Delete → Logout.
