@@ -49,3 +49,11 @@ GET  /api/search?q= | POST /api/sync { folderId? }
 ```
 
 Success: `{ "success": true, "data": {} }`. Error: `{ "success": false, "error": { "code", "message" } }`.
+
+## Security / engineering rules
+
+- Drive bytes are source of truth for contents; Supabase for favorites/activity/password.
+- Passwords hashed server-side (bcrypt); sessions are signed HttpOnly cookies; no auth in localStorage.
+- Google + Supabase service keys stay server-side; only `NEXT_PUBLIC_*` is public.
+- Upload creates metadata only after Drive succeeds; folder delete refuses non-empty without explicit force.
+- Search uses Supabase metadata (debounced), never Drive per keystroke.
