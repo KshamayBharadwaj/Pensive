@@ -31,3 +31,21 @@ Single-user, password-protected file vault. Files live in **Google Drive**; meta
 ## MVP workflow
 
 Setup → Login → See files → Upload → Create folder → Move → Favorite → Search → Download → Rename → Delete → Logout.
+
+## API
+
+```
+POST /api/auth/setup | POST /api/auth/login | POST /api/auth/logout
+GET  /api/auth/session | POST /api/auth/change-password
+GET  /api/files?folderId=&view=&sort=&order=&filter=&q=&page=&limit=
+POST /api/files/upload (multipart: files[], folderId?)
+GET  /api/files/[id] | GET /api/files/[id]/download
+PATCH /api/files/[id]/rename | PATCH /api/files/[id]/move
+POST /api/files/[id]/favorite | DELETE /api/files/[id]/delete
+GET/POST /api/folders | GET /api/folders/[id]
+PATCH /api/folders/[id]/rename | PATCH /api/folders/[id]/move
+POST /api/folders/[id]/favorite | DELETE /api/folders/[id]/delete
+GET  /api/search?q= | POST /api/sync { folderId? }
+```
+
+Success: `{ "success": true, "data": {} }`. Error: `{ "success": false, "error": { "code", "message" } }`.
